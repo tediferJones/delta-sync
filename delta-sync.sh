@@ -4,6 +4,7 @@ echo 'start delta-sync'
 path='/home/ted/Downloads/GBA Roms/Delta-Emulator-Data/vault'
 
 # We only need to track gameId, title, and index
+# We can load games from dropbox, but cant save games to dropbox
 
 files=$(ls "$path")
 fileIds=()
