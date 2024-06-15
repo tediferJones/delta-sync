@@ -5,6 +5,13 @@ path='/home/ted/Downloads/GBA Roms/Delta-Emulator-Data/vault'
 
 # We only need to track gameId, title, and index
 # We can load games from dropbox, but cant save games to dropbox
+#
+# WE NEED TO UPDATE SAVEINFO
+# We can get the right sha-1 hash for a save file (see notes/hasher.ts)
+# Time format of these is in seconds from 'January 1, 2001, 00:00:00 UTC'
+# To get correct time do: (Date.now() - new Date(Jan1)) / 1000
+# VersionIdentifier is just a random string, can be anything
+# No idea how to generate root.sha1Hash
 
 files=$(ls "$path")
 fileIds=()
