@@ -12,6 +12,9 @@ path='/home/ted/Downloads/GBA Roms/Delta-Emulator-Data/vault'
 # To get correct time do: (Date.now() - new Date(Jan1)) / 1000
 # VersionIdentifier is just a random string, can be anything
 # No idea how to generate root.sha1Hash
+#   - And this is apparently going to be a problem
+#   - the hash we need to generate is a sha1 hash of the file object, with keys ordered alphabetically
+#     - But how can replicate this file object locally?
 
 files=$(ls "$path")
 fileIds=()
