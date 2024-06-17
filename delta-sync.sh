@@ -15,6 +15,8 @@ path='/home/ted/Downloads/GBA Roms/Delta-Emulator-Data/vault'
 #   - And this is apparently going to be a problem
 #   - the hash we need to generate is a sha1 hash of the file object, with keys ordered alphabetically
 #     - But how can replicate this file object locally?
+#   - versionIdentifier usually somewhat matches
+#   - still have no idea how to generate root hash for saveInfo
 
 files=$(ls "$path")
 fileIds=()
