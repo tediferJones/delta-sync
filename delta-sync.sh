@@ -20,15 +20,39 @@ path='/home/ted/Downloads/GBA Roms/Delta-Emulator-Data/vault'
 
 files=$(ls "$path")
 fileIds=()
+declare -A myObj
 for file in $files; do
   if [[ $file =~ Game-([0-9a-zA-Z]+)$ ]]; then
-    echo "file: $file"
-    echo "id: ${BASH_REMATCH[1]}"
+    # echo "file: $file"
+    # echo "id: ${BASH_REMATCH[1]}"
+
     # echo $(cat "$path/$file" | grep -o "\"name\":\"[^\"]\+\"")
-    echo $(cat "$path/$file" | grep -Po '"name":"[^"]+"')
-    printf "\n\n"
+    # echo $(cat "$path/$file" | grep -Po '"name":"[^"]+"' | grep -oP '"name":"\K[^"]+')
+
+    # echo $(jq -r .record.name "$path/$file")
+    myObj[$file]=$(jq -r .record.name "$path/$file")
+    # echo "$path/$file"
+    # printf "\n\n"
   fi
 done
+
+length=${#myObj[@]}
+for i in $(seq 1 $length); do
+  echo "$i: ${myObj[@]:$i-1:$i}"
+done
+
+read -p "Game Number: " gameIndex
+
+if ((gameIndex < 1 || gameIndex > length)); then
+  echo 'wrong answer'
+  exit
+fi
+
+echo ${!myObj[@]}
+
+# for key in "${!myObj[@]}"; do 
+#   echo "Key: $key, Value: ${myObj[$key]}"
+# done
 
 # files=($(ls "$path" | grep "Game-[0-9a-zA-Z]\+$"))
 # 
