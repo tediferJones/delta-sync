@@ -1,16 +1,5 @@
 echo "start delta-sync"
 
-# path='/home/ted/Dropbox/Delta Emulator'
-# path='/home/ted/Downloads/GBA Roms/Delta-Emulator-Data/vault'
-
-# Put these in a config file
-# If you define the config like so:
-# path=pathToDropbox
-# tempDir=tempDirPath
-# Then you can just source the file like so: ./ds.config
-path="./notes/testVault"
-tempDir="./notes/temp"
-
 # We only need to track gameId, title, and index
 # We can load games from dropbox, but cant save games to dropbox
 #
@@ -26,8 +15,15 @@ tempDir="./notes/temp"
 #   - versionIdentifier usually somewhat matches
 #   - still have no idea how to generate root hash for saveInfo
 
-# files=$(ls "$path")
-# fileIds=()
+# Put these in a config file
+# If you define the config like so:
+# path=pathToDropbox
+# tempDir=tempDirPath
+# Then you can just source the file like so: ./ds.config
+# path='/home/ted/Dropbox/Delta Emulator'
+# path='/home/ted/Downloads/GBA Roms/Delta-Emulator-Data/vault'
+path="./notes/testVault"
+tempDir="./notes/temp"
 
 # Create a key value pair, with gameId as key and game title as value
 declare -A myObj
@@ -70,17 +66,29 @@ cp $path/*"$gameId"* "$tempDir"
 # Game file needs to end with appropriate file extension
 # Save file needs to be named same as Game file with its own appropriate file extension
 for file in $(ls $tempDir); do
-  echo $file
-  case "$file" in 
-    Game-*-game)
-      echo 'Found Game'
-      ;;
-    *)
-      echo 'Found not game'
-      ;;
-  esac
+  # echo $file
+  lowerCase=${file,,}
+  echo $lowerCase
+  if [[ $lowerCase =~ ^game-[0-9a-f]+-game$ ]]; then
+    echo 'found game'
+    mv $tempDir/$file $tempDir/temp.gba
+  elif [[ $lowerCase =~ ^game-[0-9a-f]+$ ]]; then
+    echo 'found game info'
+    mv $tempDir/$file $tempDir/gameInfo.json
+  elif [[ $lowerCase =~ ^gamesave-[0-9a-f]+-gamesave$ ]]; then
+    echo 'found save'
+    mv $tempDir/$file $tempDir/temp.sav
+  elif [[ $lowerCase =~ ^gamesave-[0-9a-f]+$ ]]; then
+    echo 'found save info'
+    mv $tempDir/$file $tempDir/saveInfo.json
+  fi
 done
-# rm $tempDir/*
+
+vbam $tempDir/temp.gba
+
+echo 'Game has closed'
+
+rm -r $tempDir
 
 # echo ${myObj[]}
 # echo $keys
