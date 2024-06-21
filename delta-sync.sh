@@ -14,6 +14,8 @@ echo "start delta-sync"
 #     - But how can replicate this file object locally?
 #   - versionIdentifier usually somewhat matches
 #   - still have no idea how to generate root hash for saveInfo
+# Pretty sure we would need some internal information that is not stored in the text files
+#   - No point in working on anything else until this gets figured out
 
 # Put these in a config file
 # If you define the config like so:
